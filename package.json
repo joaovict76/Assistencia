@@ -1,0 +1,27 @@
+{
+  "name": "assistencia",
+  "version": "1.0.0",
+  "description": "Projeto de assistencia tecnica de celular",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joaovict76/Assistencia.git"
+  },
+  "author": "João Victor",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joaovict76/Assistencia/issues"
+  },
+  "homepage": "https://github.com/joaovict76/Assistencia#readme",
+  "keywords": [],
+  "dependencies": {
+    "electron": "^36.2.0",
+    "express": "^5.1.0",
+    "jspdf": "^3.0.1",
+    "node": "^24.0.1"
+  }
+}
