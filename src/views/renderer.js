@@ -11,15 +11,11 @@ function client() {
     //uso da api(autorizada no preload.js)
     api.clientWindow()
 }
-
-function assistencia() {
-    //console.log("teste do botão cliente")
-    //uso da api(autorizada no preload.js)
-    api.assistenciaWindow()
-}
-
-
-
+  function assist() {
+    // abrir tela de assistência técnica
+    window.location.href = "assistencia.html";
+  }
+  
 
 // Troca do ícone do banco de dados (usando a api do preload.js)
 api.dbStatus((event, message) => {

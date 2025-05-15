@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assistência Técnica</title>
+  <link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Ficha de Assistência Técnica</h2>
+    
+    <form>
+      <!-- Dados do Cliente -->
+        <legend>Dados do Cliente</legend>
+        <div class=" col mb-3">
+          <label for="nomeCliente" class="form-label">Nome:</label>
+          <input type="text" class="form-control" id="nomeCliente" required>
+        </div>
+        <div class="col mb-3">
+          <label for="telefoneCliente" class="form-label">Telefone:</label>
+          <input type="tel" class="form-control" id="telefoneCliente" required>
+        </div>
+
+
+      <!-- Dados do Aparelho -->
+        <legend >Dados do Aparelho</legend>
+        <div class="col mb-3">
+          <label for="marca" class="form-label">Marca:</label>
+          <input type="text" class="form-control" id="marca">
+        </div>
+        <div class="col mb-3">
+          <label for="modelo" class="form-label">Modelo:</label>
+          <input type="text" class="form-control" id="modelo">
+        </div>
+        <div class="col mb-3">
+          <label for="cor" class="form-label">Cor:</label>
+          <input type="text" class="form-control" id="cor">
+        </div>
+        <div class="col mb-3">
+          <label for="imei" class="form-label">IMEI:</label>
+          <input type="text" class="form-control" id="imei">
+        </div>
+      
+
+      <!-- Descrição Técnica -->
+        <legend >Serviço</legend>
+        <div class="col mb-3">
+          <label for="defeito" class="form-label">Defeito Informado:</label>
+          <textarea class="form-control" id="defeito" rows="2"></textarea>
+        </div>
+        <div class="col mb-3">
+          <label for="diagnostico" class="form-label">Diagnóstico Técnico:</label>
+          <textarea class="form-control" id="diagnostico" rows="2"></textarea>
+        </div>
+        <div class="col mb-3">
+          <label for="valor" class="form-label">Valor do Serviço (R$):</label>
+          <input type="number" class="form-control" id="valor" step="0.01">
+        </div>
+        <div class="col mb-3">
+          <label for="status" class="form-label">Status:</label>
+          <select class="form-select" id="status">
+            <option value="pendente">Pendente</option>
+            <option value="em_reparo">Em Reparo</option>
+            <option value="concluido">Concluído</option>
+            <option value="cancelado">Cancelado</option>
+          </select>
+        </div>
+
+      <!-- Botões -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-success">Salvar</button>
+        <button type="reset" class="btn btn-secondary">Limpar</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="../public/js/bootstrap.min.js"></script>
+</body>
+</html>

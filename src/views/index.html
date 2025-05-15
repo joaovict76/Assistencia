@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Título que será exibido na janela -->
-    <title>Cadastro de clientes</title>
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
-    <!-- CSS personalizado -->
-    <link rel="stylesheet" href="../public/css/style.css">
-    <!-- impedir a execução de scripts externos ou não autorizados -->
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de clientes</title>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="../public/css/style.css" />
+  <!-- Política de segurança -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" />
 </head>
 
 <body>
-    <div class="container button">
-        <img src="../public/img/clientes.png" alt="clientes" title="Cadastro de clientes" onclick="client()">       
-    </div>
+  <div class="container my-5">
+    <div class="row justify-content-center text-center">
+      <!-- Imagem de Cadastro de Clientes -->
+      <div class="col-md-6 mb-4">
+        <img src="../public/img/clientes.png" alt="Cadastro de clientes" title="Cadastro de clientes"
+          class="img-fluid rounded shadow" style="cursor:pointer;" onclick="client()" />
+        <h5 class="mt-2">Cadastro de Clientes</h5>
+      </div>
 
-     <div class="container button">
-         <img src="../public/img/assistencia.png" alt="assistencia" title="assistencia tecnica" onclick="assistencia()">       
+      <!-- Imagem de Assistência Técnica -->
+      <div class="col-md-6 mb-4">
+        <img src="../public/img/assistencia.png" alt="Assistência Técnica" title="Assistência Técnica"
+          class="img-fluid rounded shadow" style="cursor:pointer;" onclick="assist()" />
+        <h5 class="mt-2">Assistência Técnica</h5>
+      </div>
     </div>
-        <p id="dataAtual"></p>
-        <img src="../public/img/dboff.png" alt="dbicon" id="statusdb">
-    </footer>
+  </div>
 
-    <!-- Bootstrap -->
-    <script src="../public/js/bootstrap.min.js"></script>
-    <!-- Scripts -->
-    <script src="../public/js/script.js"></script>
-    <!-- Renderizador -->
-    <script src="renderer.js"></script>
+  <footer class="text-center">
+    <p id="dataAtual"></p>
+    <img src="../public/img/dboff.png" alt="dbicon" id="statusdb">
+  </footer>
+
+  <!-- Bootstrap -->
+  <script src="../public/js/bootstrap.min.js"></script>
+  <!-- Scripts -->
+  <script src="../public/js/script.js"></script>
+  <!-- Renderizador -->
+  <script src="renderer.js"></script>
 </body>
-
 </html>
