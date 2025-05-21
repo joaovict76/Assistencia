@@ -18,6 +18,7 @@
     margin-left: 10px;
 }
 
+
 /* rodapé */
 footer {
     width: 100%;
@@ -70,3 +71,41 @@ footer p {
     border-radius: 5px;
     border: 1px solid #f44336;
 }
+
+.logo-empresa {
+    position: fixed;
+    right: 20px;         /* distância da borda direita */
+    bottom: 80px;        /* distância da parte inferior (para não ficar colado no rodapé) */
+    max-width: 150px;
+    padding: 5px;
+    border: 1px solid #e8e8e8;
+    cursor: pointer;
+    background-color: white; /* opcional, só se quiser um fundo */
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.buscar-cliente {
+    display: flex;
+    align-items: flex-end; /* alinhamento vertical ao fundo para casar com label */
+    gap: 10px; /* espaçamento entre os elementos */
+  }
+  
+  .buscar-cliente label {
+    margin-bottom: 0; /* evita espaçamento extra */
+    padding-right: 10px;
+    white-space: nowrap; /* evita quebra da label */
+  }
+  
+  .buscar-cliente input {
+    flex: 1; /* faz o input ocupar o máximo possível */
+    padding: 6px 10px;
+    font-size: 1rem;
+  }
+  
+  .buscar-cliente button {
+    padding: 6px 12px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
