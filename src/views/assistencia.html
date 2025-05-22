@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-
   <title>Assistência Técnica</title>
 
 </head>
@@ -15,19 +13,29 @@
     
     <form>
       <!-- Buscar Cliente -->
-      <fieldset class="mb-4">
-        <legend>Buscar Cliente</legend>
-        <div class="buscar-cliente">
-          <label for="nomeCliente" class="form-label">Nome:</label>
-          <input type="text" id="nomeCliente" required>
-          <button type="button" onclick="buscarCliente()">Buscar Cliente</button>
+      <fieldset class="mb-4 border p-3 rounded">
+        <legend class="float-none w-auto px-2">Buscar Cliente</legend>
+        <div class="input-group">
+          <input 
+            type="text" 
+            id="nomeCliente" 
+            class="form-control" 
+            placeholder="Digite o nome do cliente"
+            required
+          >
+          <button 
+            type="button" 
+            class="btn btn-primary"
+            onclick="buscarCliente()"
+          >
+            Buscar
+          </button>
         </div>
-        
       </fieldset>
 
       <!-- Dados do Aparelho -->
-      <fieldset class="mb-4">
-        <legend>Dados do Aparelho</legend>
+      <fieldset class="mb-4 border p-3 rounded">
+        <legend class="float-none w-auto px-2">Dados do Aparelho</legend>
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="marca" class="form-label">Marca:</label>
@@ -35,22 +43,28 @@
           </div>
           <div class="col-md-6 mb-3">
             <label for="modelo" class="form-label">Modelo:</label>
-            <input type="text" class="form-control" id="modelo">
+            <input type="text" class="form-control" id="modelo" readonly>
           </div>
           <div class="col-md-6 mb-3">
             <label for="cor" class="form-label">Cor:</label>
-            <input type="text" class="form-control" id="cor">
+            <input type="text" class="form-control" id="cor" readonly>
           </div>
           <div class="col-md-6 mb-3">
             <label for="imei" class="form-label">IMEI:</label>
-            <input type="text" class="form-control" id="imei">
+            <input 
+              type="text" 
+              class="form-control" 
+              id="imei" 
+              maxlength="15"
+              placeholder="Digite o IMEI"
+            >
           </div>
         </div>
       </fieldset>
 
       <!-- Descrição Técnica -->
-      <fieldset class="mb-4">
-        <legend>Serviço</legend>
+      <fieldset class="mb-4 border p-3 rounded">
+        <legend class="float-none w-auto px-2">Serviço</legend>
         <div class="mb-3">
           <label for="defeito" class="form-label">Defeito Informado:</label>
           <textarea class="form-control" id="defeito" rows="2"></textarea>
@@ -84,6 +98,23 @@
     </form>
   </div>
 
-  <script src="../public/js/bootstrap.min.js"></script>
+  
+  <!-- Script IMEI -->
+  <script>
+    const inputImei = document.getElementById('imei');
+    const inputModelo = document.getElementById('modelo');
+    const inputCor = document.getElementById('cor');
+
+    inputImei.addEventListener('input', () => {
+      if (inputImei.value.length === 15) {
+        window.api.imeiSearch(inputImei.value);
+      }
+    });
+
+    window.api.setImeiInfo((event, data) => {
+      inputModelo.value = data.modelo;
+      inputCor.value = data.cor;
+    });
+  </script>
 </body>
 </html>
