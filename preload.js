@@ -23,5 +23,9 @@ contextBridge.exposeInMainWorld('api', {
     updateClient: (client) => ipcRenderer.send('update-client', client),
     setCpf: (args) => ipcRenderer.on('set-cpf', args),
     imeiSearch: (imei) => ipcRenderer.send('imei-search', imei),
-    setImeiInfo: (callback) => ipcRenderer.on('imei-result', callback)
+    setImeiInfo: (callback) => ipcRenderer.on('imei-result', callback),
+    salvarFicha: (ficha) => ipcRenderer.send('salvar-ficha', ficha),
+    lerFichas: (callback) => ipcRenderer.on('render-fichas', callback),
+    deletarFicha: (id) => ipcRenderer.send('deletar-ficha', id),
+    gerarRelatorioFicha: () => ipcRenderer.send('gerar-relatorio-ficha')
 })

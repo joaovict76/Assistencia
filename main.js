@@ -4,6 +4,7 @@ const { app, BrowserWindow, nativeTheme, Menu, ipcMain, dialog, shell } = requir
 const path = require('node:path')
 const { conectar, desconectar } = require('./database.js')
 const clientModel = require('./src/models/Clientes.js')
+const assistenciaModel = require('./src/models/produto.js')
 const fs = require('fs')
 const { default: jsPDF } = require('jspdf')
 
@@ -57,6 +58,22 @@ function clientWindow() {
     client.center()
 }
 
+let assistencia
+function assistenciaWindow() {
+    const main = BrowserWindow.getFocusedWindow()
+    assistencia = new BrowserWindow({
+        width: 1010,
+        height: 680,
+        parent: main,
+        modal: true,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
+    })
+    assistencia.loadFile('./src/views/assistencia.html')
+    assistencia.center()
+}
+
 // ============ Inicialização ============
 app.whenReady().then(() => {
     createWindow()
@@ -85,6 +102,7 @@ const template = [
         label: 'Cadastro',
         submenu: [
             { label: 'Clientes', click: () => clientWindow() },
+            { label: 'Assistência', click: () => assistenciaWindow() },
             { type: 'separator' },
             { label: 'Sair', click: () => app.quit(), accelerator: 'Alt+F4' }
         ]
@@ -95,6 +113,13 @@ const template = [
             { label: 'Clientes', click: () => relatorioClientes() }
         ]
     },
+    {
+        label: 'Assistência',
+        submenu: [
+            { label: 'Ficha Técnica', click: () => assistenciaWindow() },
+            { label: 'Relatório', click: () => relatorioFicha() } // <- alterado para chamar direto a função
+        ]
+    },    
     {
         label: 'Ferramentas',
         submenu: [
@@ -126,20 +151,20 @@ ipcMain.on('db-connect', async (event) => {
 
 // ============ Validação de CPF ============
 function validarCPF(cpf) {
-    cpf = cpf.replace(/[^\d]+/g, '');
-    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+    cpf = cpf.replace(/[^\d]+/g, '')
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false
 
-    let soma = 0, resto;
-    for (let i = 1; i <= 9; i++) soma += parseInt(cpf[i - 1]) * (11 - i);
-    resto = (soma * 10) % 11;
-    if (resto === 10 || resto === 11) resto = 0;
-    if (resto !== parseInt(cpf[9])) return false;
+    let soma = 0, resto
+    for (let i = 1; i <= 9; i++) soma += parseInt(cpf[i - 1]) * (11 - i)
+    resto = (soma * 10) % 11
+    if (resto === 10 || resto === 11) resto = 0
+    if (resto !== parseInt(cpf[9])) return false
 
-    soma = 0;
-    for (let i = 1; i <= 10; i++) soma += parseInt(cpf[i - 1]) * (12 - i);
-    resto = (soma * 10) % 11;
-    if (resto === 10 || resto === 11) resto = 0;
-    return resto === parseInt(cpf[10]);
+    soma = 0
+    for (let i = 1; i <= 10; i++) soma += parseInt(cpf[i - 1]) * (12 - i)
+    resto = (soma * 10) % 11
+    if (resto === 10 || resto === 11) resto = 0
+    return resto === parseInt(cpf[10])
 }
 
 // ============ CRUD - Create ============
@@ -163,7 +188,6 @@ ipcMain.on('new-client', async (event, client) => {
             logradouroCliente: client.addressCli,
             numeroCliente: client.numberCli,
             bairroCliente: client.neighborhoodCli,
-
         })
         await newClient.save()
 
@@ -243,7 +267,6 @@ ipcMain.on('update-client', async (event, client) => {
                 logradouroCliente: client.addressCli,
                 numeroCliente: client.numberCli,
                 bairroCliente: client.neighborhoodCli,
-
             },
             { new: true }
         )
@@ -270,23 +293,54 @@ ipcMain.on('update-client', async (event, client) => {
 
 // ============ CRUD - Delete ============
 ipcMain.on('delete-client', async (event, id) => {
-    const result = await dialog.showMessageBox(win, {
-        type: 'warning',
-        title: "Atenção!",
-        message: "Tem certeza que deseja excluir este cliente?\nEsta ação não poderá ser desfeita.",
-        buttons: ['Cancelar', 'Excluir']
-    })
-    if (result.response === 1) {
-        try {
+    try {
+        const choice = await dialog.showMessageBox({
+            type: 'warning',
+            buttons: ['Sim', 'Não'],
+            defaultId: 1,
+            title: 'Excluir Cliente',
+            message: 'Confirma a exclusão do cliente?'
+        })
+
+        if (choice.response === 0) {
             await clientModel.findByIdAndDelete(id)
-            event.reply('reset-form')
-        } catch (error) {
-            console.error(error)
+            dialog.showMessageBox({
+                type: 'info',
+                title: "Aviso",
+                message: "Cliente excluído com sucesso.",
+                buttons: ['OK']
+            }).then(() => event.reply('reset-form'))
         }
+    } catch (error) {
+        console.error(error)
     }
 })
 
-// ============ Relatório PDF ============
+// ============ CRUD - Assistência ============
+ipcMain.on('new-assistencia', async (event, assist) => {
+    try {
+        const newAssist = new assistenciaModel({
+            nomeCliente: assist.nomeCliente,
+            cpfCliente: assist.cpfCliente,
+            telefoneCliente: assist.telefoneCliente,
+            modelo: assist.modelo,
+            imei: assist.imei,
+            descricaoDefeito: assist.descricaoDefeito
+        })
+        await newAssist.save()
+
+        dialog.showMessageBox({
+            type: 'info',
+            title: "Aviso",
+            message: "Assistência cadastrada com sucesso.",
+            buttons: ['OK']
+        }).then(() => event.reply('reset-form-assistencia'))
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+// ============ Gerar relatório clientes ============
 async function relatorioClientes() {
     try {
         const doc = new jsPDF('p', 'mm', 'a4')
@@ -295,13 +349,14 @@ async function relatorioClientes() {
         doc.setFontSize(10)
         doc.text(`Data: ${dataAtual}`, 170, 15)
         doc.setFontSize(18)
-        doc.text("Relatório de clientes", 15, 30)
+        doc.text("Relatório de Clientes", 15, 30)
 
         doc.setFontSize(12)
         let y = 50
 
         doc.text("Nome", 14, y)
-        doc.text("Telefone", 85, y)
+        doc.text("CPF", 80, y)
+        doc.text("Telefone", 140, y)
         y += 5
         doc.setLineWidth(0.5)
         doc.line(10, y, 200, y)
@@ -314,13 +369,15 @@ async function relatorioClientes() {
                 doc.addPage()
                 y = 20
                 doc.text("Nome", 14, y)
-                doc.text("Telefone", 85, y)
+                doc.text("CPF", 80, y)
+                doc.text("Telefone", 140, y)
                 y += 5
                 doc.line(10, y, 200, y)
                 y += 10
             }
-            doc.text(c.nomeCliente, 15, y)
-            doc.text(c.foneCliente, 85, y)
+            doc.text(c.nomeCliente, 14, y)
+            doc.text(c.cpfCliente, 80, y)
+            doc.text(c.foneCliente, 140, y)
             y += 10
         })
 
@@ -334,23 +391,82 @@ async function relatorioClientes() {
         const tempDir = app.getPath('temp')
         const filePath = path.join(tempDir, 'clientes.pdf')
         doc.save(filePath)
-        shell.openPath(filePath)
-
+        await shell.openPath(filePath)
     } catch (error) {
         console.error(error)
     }
 }
-const imeiData = [
-    { imei: '123456789012345', modelo: 'iPhone 14', cor: 'Preto' },
-    { imei: '987654321098765', modelo: 'Samsung S23', cor: 'Azul' }
-    // Aqui você pode colocar sua base ou até conectar a um banco externo
-]
 
-ipcMain.on('imei-search', (event, imei) => {
-    const result = imeiData.find(item => item.imei === imei)
-    if (result) {
-        event.sender.send('set-imei-info', result)
-    } else {
-        event.sender.send('set-imei-info', { modelo: 'Não encontrado', cor: 'Não encontrado' })
+// ============ Gerar relatório ficha assistência ============
+async function relatorioFicha() {
+    try {
+      const doc = new jsPDF('p', 'mm', 'a4')
+      const dataAtual = new Date().toLocaleDateString('pt-BR')
+      
+      doc.setFontSize(10)
+      doc.text(`Data: ${dataAtual}`, 170, 15)
+      doc.setFontSize(18)
+      doc.text("Relatório de Assistências", 15, 30)
+      
+      doc.setFontSize(12)
+      let y = 50
+  
+      // Cabeçalho da tabela
+      const headers = ["Cliente", "Marca", "Modelo", "Cor", "IMEI", "Defeito", "Diagnóstico", "Valor", "Status", "Data"]
+      const positions = [14, 40, 70, 95, 120, 145, 170, 195, 220, 245] // posições x para cada coluna (ajuste se necessário)
+  
+      headers.forEach((header, i) => {
+        doc.text(header, positions[i], y)
+      })
+      
+      y += 5
+      doc.setLineWidth(0.5)
+      doc.line(10, y, 270, y) // linha separadora (ajuste largura conforme precisa)
+      y += 10
+  
+      // Busca dados da assistência
+      const fichas = await assistenciaModel.find().sort({ nomeCliente: 1 })
+  
+      fichas.forEach(f => {
+        if (y > 270) { // quebra de página
+          doc.addPage()
+          y = 20
+          headers.forEach((header, i) => {
+            doc.text(header, positions[i], y)
+          })
+          y += 5
+          doc.line(10, y, 270, y)
+          y += 10
+        }
+  
+        // Preenche dados linha a linha
+        doc.text(f.nomeCliente || '', positions[0], y)
+        doc.text(f.marca || '', positions[1], y)
+        doc.text(f.modelo || '', positions[2], y)
+        doc.text(f.cor || '', positions[3], y)
+        doc.text(f.imei || '', positions[4], y)
+        doc.text(f.defeito || '', positions[5], y)
+        doc.text(f.diagnostico || '', positions[6], y)
+        doc.text(f.valor ? String(f.valor) : '', positions[7], y)
+        doc.text(f.status || '', positions[8], y)
+        doc.text(f.data ? new Date(f.data).toLocaleString('pt-BR') : '', positions[9], y)
+  
+        y += 10
+      })
+  
+      const pages = doc.internal.getNumberOfPages()
+      for (let i = 1; i <= pages; i++) {
+        doc.setPage(i)
+        doc.setFontSize(10)
+        doc.text(`Página ${i} de ${pages}`, 105, 290, { align: 'center' })
+      }
+  
+      const tempDir = app.getPath('temp')
+      const filePath = path.join(tempDir, 'assistencias.pdf')
+      doc.save(filePath)
+      await shell.openPath(filePath)
+  
+    } catch (error) {
+      console.error(error)
     }
-})
+  }
