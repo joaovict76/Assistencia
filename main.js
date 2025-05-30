@@ -8,6 +8,7 @@ const assistenciaModel = require('./src/models/produto.js')
 const fs = require('fs')
 const { default: jsPDF } = require('jspdf')
 
+
 // ============ Janela principal ============
 let win
 const createWindow = () => {
@@ -446,7 +447,6 @@ async function relatorioFicha() {
         doc.text(f.cor || '', positions[3], y)
         doc.text(f.imei || '', positions[4], y)
         doc.text(f.defeito || '', positions[5], y)
-        doc.text(f.diagnostico || '', positions[6], y)
         doc.text(f.valor ? String(f.valor) : '', positions[7], y)
         doc.text(f.status || '', positions[8], y)
         doc.text(f.data ? new Date(f.data).toLocaleString('pt-BR') : '', positions[9], y)
@@ -470,3 +470,4 @@ async function relatorioFicha() {
       console.error(error)
     }
   }
+

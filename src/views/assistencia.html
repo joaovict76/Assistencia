@@ -1,213 +1,201 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../public/css/bootstrap.min.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-  <title>Ordem de Serviço - Assistência Técnica</title>
+  <title>Ordem de Serviço</title>
 
   <style>
     * {
       font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
     }
 
     body {
       background-color: #f8f9fa;
-      font-size: 14px;
+      font-size: 12px;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
     }
 
     .container {
       background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin-top: 20px;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+      margin: 5px auto;
+      max-width: 850px;
     }
 
     h2 {
       text-align: center;
-      background-color: #0d6efd;
+      background-color: gray;
       color: white;
-      padding: 10px;
-      border-radius: 6px;
-      margin-bottom: 20px;
-      font-size: 1.5rem;
+      padding: 6px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
     }
 
     legend {
-      font-size: 1rem;
+      font-size: 0.85rem;
       font-weight: 600;
-      padding: 5px 10px;
-      background-color: #0d6efd;
+      padding: 3px 6px;
+      background-color: gray;
       color: white;
       border-radius: 4px;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
     label {
       font-weight: 500;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
+      font-size: 0.8rem;
     }
 
-    input, select, textarea {
-      font-size: 13px !important;
+    input,
+    select,
+    textarea {
+      font-size: 11px !important;
+      padding: 4px 6px !important;
     }
 
     textarea {
       resize: none;
+      height: 40px;
     }
 
     .input-group button {
-      min-width: 80px;
+      min-width: 65px;
     }
 
     .section-box {
       border: 1px solid #dee2e6;
-      border-radius: 6px;
-      padding: 10px;
-      margin-bottom: 20px;
+      border-radius: 4px;
+      padding: 6px;
+      margin-bottom: 8px;
     }
 
     .signature-box {
       border-top: 1px solid #000;
-      margin-top: 40px;
+      margin-top: 10px;
       padding-top: 5px;
       text-align: center;
-      font-size: 12px;
+      font-size: 10px;
     }
 
     .text-center button {
-      min-width: 100px;
+      min-width: 80px;
+      padding: 4px 8px;
+      font-size: 12px;
     }
 
     footer {
       text-align: center;
-      font-size: 12px;
+      font-size: 10px;
       color: gray;
-      margin-top: 10px;
+      margin-top: 4px;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h2>Ficha de Assistência Técnica</h2>
-
     <form>
       <!-- Buscar Cliente -->
-      <div class="section-box">
-        <legend>Buscar Cliente</legend>
+      <div>
+        <legend class="text-center">Buscar Cliente</legend>
         <div class="input-group mb-2">
-          <input 
-            type="text" 
-            id="nomeCliente" 
-            class="form-control" 
-            placeholder="Digite o nome do cliente"
-            required
-          >
-          <button 
-            type="button" 
-            class="btn btn-primary"
-            onclick="searchName()"
-          >
+          <input type="text" id="nomeCliente" class="form-control" placeholder="Digite o nome do cliente" required>
+          <button type="button" class="btn btn-secondary" id="btnBuscarCliente">
             Buscar
           </button>
         </div>
       </div>
+      <form>
+        <!-- Dados do Aparelho -->
+        <div class="section-box">
+          <legend class="text-center">Dados do Aparelho</legend>
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label for="marca">Marca:</label>
+              <input type="text" class="form-control" id="marca">
+            </div>
+            <div class="col-md-6 mb-2">
+              <label for="modelo">Modelo:</label>
+              <input type="text" class="form-control" id="modelo">
+            </div>
+            <div class="col-md-6 mb-2">
+              <label for="cor">Cor:</label>
+              <input type="text" class="form-control" id="cor">
+            </div>
+            <div class="col-md-6 mb-2">
+              <label for="imei">IMEI:</label>
+              <input type="text" class="form-control" id="imei" maxlength="15" placeholder="Digite o IMEI">
+            </div>
+          </div>
 
-      <!-- Dados do Aparelho -->
-      <div class="section-box">
-        <legend>Dados do Aparelho</legend>
-        <div class="row">
-          <div class="col-md-6 mb-2">
-            <label for="marca">Marca:</label>
-            <input type="text" class="form-control" id="marca">
+          <div class="mb-2">
+            <label for="senha">Senha do aparelho (se houver):</label>
+            <input type="text" class="form-control" id="senha" placeholder="Informe a senha">
           </div>
-          <div class="col-md-6 mb-2">
-            <label for="modelo">Modelo:</label>
-            <input type="text" class="form-control" id="modelo">
-          </div>
-          <div class="col-md-6 mb-2">
-            <label for="cor">Cor:</label>
-            <input type="text" class="form-control" id="cor">
-          </div>
-          <div class="col-md-6 mb-2">
-            <label for="imei">IMEI:</label>
-            <input 
-              type="text" 
-              class="form-control" 
-              id="imei" 
-              maxlength="15"
-              placeholder="Digite o IMEI"
-            >
-          </div>
-        </div>
 
-        <div class="mb-2">
-          <label for="senha">Senha do aparelho (se houver):</label>
-          <input 
-            type="text" 
-            class="form-control" 
-            id="senha"
-            placeholder="Informe a senha de desbloqueio"
-          >
-        </div>
-
-        <div class="mb-2">
-          <label for="defeito">Defeito Informado:</label>
-          <textarea class="form-control" id="defeito" rows="2"></textarea>
-        </div>
-        <div class="mb-2">
-          <label for="diagnostico">Diagnóstico Técnico:</label>
-          <textarea class="form-control" id="diagnostico" rows="2"></textarea>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6 mb-2">
-            <label for="valor">Valor do Serviço (R$):</label>
-            <input type="number" class="form-control" id="valor" step="0.01">
+          <div class="mb-2">
+            <label for="defeito">Defeito Informado:</label>
+            <textarea class="form-control" id="defeito"></textarea>
           </div>
-          <div class="col-md-6 mb-2">
-            <label for="status">Status:</label>
-            <select class="form-select" id="status">
-              <option value="pendente">Pendente</option>
-              <option value="em_reparo">Em Reparo</option>
-              <option value="concluido">Concluído</option>
-              <option value="cancelado">Cancelado</option>
-            </select>
-          </div>
-        </div>
-      </div>
 
-      <!-- Assinaturas -->
-      <div class="section-box">
-        <div class="row">
-          <div class="col-md-6 signature-box">
-            ___________________________________________<br>
-            Assinatura do Proprietário
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label for="valor">Valor (R$):</label>
+              <input type="number" class="form-control" id="valor" step="0.01">
+            </div>
+            <div class="col-md-6 mb-2">
+              <label for="status">Status:</label>
+              <select class="form-select" id="status">
+                <option value="pendente">Pendente</option>
+                <option value="em_reparo">Em Reparo</option>
+                <option value="concluido">Concluído</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+            </div>
           </div>
-          <div class="col-md-6 signature-box">
-            ___________________________________________<br>
-            Assinatura do Técnico
+
+
+          <!-- Assinaturas -->
+          <div>
+            <div class="row">
+              <div class="col-md-6 signature-box">
+                ___________________________________________<br>
+                Assinatura do Proprietário
+              </div>
+              <div class="col-md-6 signature-box">
+                ___________________________________________<br>
+                Assinatura do Técnico
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+          <!-- Botões -->
+          <div class="text-center">
+            <button type="button" class="btn btn-danger me-2" id="btnEditarFicha">
+              Editar
+            </button>
+            <button type="button" class="btn btn-success me-2" id="btnSalvarFicha">
+              Salvar
+            </button>
+            <button type="button" class="btn btn-warning me-2" id="btnExcluirFicha">
+              Excluir
+            </button>
+          </div>
 
-      <!-- Botões -->
-      <div class="text-center">
-        <button type="submit" class="btn btn-success me-2">Salvar</button>
-        <button type="reset" class="btn btn-secondary">Limpar</button>
-      </div>
-    </form>
-
-    <footer>
-      <p>Empresa Assistência Técnica XYZ | CNPJ: 00.000.000/0001-00</p>
-    </footer>
+      </form>
   </div>
 
   <script src="rendererAssistencia.js"></script>
 </body>
+
 </html>
