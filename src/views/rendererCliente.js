@@ -40,11 +40,15 @@ let arrayClient = [];
 const frmClient = document.getElementById('formClient');
 const nameClient = document.getElementById('inputNameClient');
 const cpfClient = document.getElementById('inputCPFClient');
+const emailClient = document.getElementById('inputEmailClient');
 const phoneClient = document.getElementById('inputPhoneClient');
 const cepClient = document.getElementById('inputCEPClient');
 const addressClient = document.getElementById('inputAddressClient');
 const numberClient = document.getElementById('inputNumberClient');
+const complementClient = document.getElementById('inputComplementClient');
 const neighborhoodClient = document.getElementById('inputNeighborhoodClient');
+const cityClient = document.getElementById('inputCityClient');
+const ufClient = document.getElementById('inputUFClient');
 const idClient = document.getElementById('inputIdClient');
 
 // Inicializar a janela e botões ao carregar a página
@@ -103,11 +107,15 @@ function montarObjetoCliente() {
     return {
         nameCli: nameClient.value,
         cpfCli: cpfClient.value,
+        emailCli: emailClient.value,
         phoneCli: phoneClient.value,
         cepCli: cepClient.value,
         addressCli: addressClient.value,
         numberCli: numberClient.value,
+        complementCli: complementClient.value,
         neighborhoodCli: neighborhoodClient.value,
+        cityCli: cityClient.value,
+        ufCli: ufClient.value
     };
 }
 
@@ -159,11 +167,15 @@ function searchName() {
                 idClient.value = c._id;
                 nameClient.value = c.nomeCliente;
                 cpfClient.value = c.cpfCliente;
+                emailClient.value = c.emailCliente;
                 phoneClient.value = c.foneCliente;
                 cepClient.value = c.cepCliente;
                 addressClient.value = c.logradouroCliente;
                 numberClient.value = c.numeroCliente;
+                complementClient.value = c.complementoCliente;
                 neighborhoodClient.value = c.bairroCliente;
+                cityClient.value = c.cidadeCliente;
+                ufClient.value = c.ufCliente;
 
                 restaurarEnter();
                 btnCreate.disabled = true;

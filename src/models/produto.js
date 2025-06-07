@@ -1,17 +1,19 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
 
-const ProdutoSchema = new Schema({
-  cliente: { type: String, required: true },       // nome do cliente
-  marca: { type: String },
-  modelo: { type: String },
-  cor: { type: String },
-  imei: { type: String },
-  defeito: { type: String },
-  senha: { type: String },
-  valor: { type: String },          // pode ser Number se preferir
-  status: { type: String },
-  data: { type: Date, default: Date.now }  // data do registro
-});
+const Assistencia = mongoose.model('Assistencia', {
+    nomeCliente: { type: String, required: true },
+    cpfCliente: { type: String },
+    telefoneCliente: { type: String },
+    marca: { type: String },
+    modelo: { type: String },
+    cor: { type: String },
+    imei: { type: String },
+    senha: { type: String },
+    descricaoDefeito: { type: String },
+    diagnostico: { type: String },
+    valor: { type: Number },
+    status: { type: String },
+    data: { type: Date, default: Date.now }
+})
 
-module.exports = mongoose.model('Produto', ProdutoSchema);
+module.exports = Assistencia
